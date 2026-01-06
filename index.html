@@ -2,52 +2,53 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Telegram Channel Feed</title>
+  <title>Telegram Feed</title>
 
-  <!-- Telegram Mini App SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      padding: 15px;
+      padding: 16px;
       background: #ffffff;
     }
     .post {
-      border-bottom: 1px solid #ddd;
-      padding: 15px 0;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 12px 0;
     }
     .channel {
       font-weight: bold;
       color: #0088cc;
+      margin-bottom: 4px;
     }
   </style>
 </head>
 
 <body>
   <h3>Лента каналов</h3>
-  <div id="feed"></div>
+  <div id="feed">Загрузка...</div>
 
   <script>
-    const tg = Telegram.WebApp;
-    tg.expand(); // разворачивает Mini App
+    if (window.Telegram && Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
 
-    // ВРЕМЕННЫЕ ДАННЫЕ (для MVP)
     const posts = [
       { channel: "@telegram", text: "Обновление Telegram" },
       { channel: "@durov", text: "Пост Павла Дурова" }
     ];
 
     const feed = document.getElementById("feed");
+    feed.innerHTML = "";
 
     posts.forEach(post => {
       const div = document.createElement("div");
       div.className = "post";
-      div.innerHTML = `
-        <div class="channel">${post.channel}</div>
-        <div>${post.text}</div>
-      `;
+      div.innerHTML =
+        '<div class="channel">' + post.channel + '</div>' +
+        '<div>' + post.text + '</div>';
       feed.appendChild(div);
     });
   </script>
